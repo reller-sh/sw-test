@@ -1,11 +1,12 @@
 import Head from "next/head";
 import {useStore} from "@/hooks/useStore";
-import React, {useEffect} from "react";
+import React, {useState} from "react";
 import {observer} from "mobx-react";
 import {BlockStateView} from "@/components/BlockStateView";
 import {RepositoryItem} from "@/components/RepositoryItem";
 import {RepoSearchResultItem} from "@/core/clients/types";
 import {Input} from "@/components/Input";
+import {CopyButton} from "@/components/CopyButton";
 
 export const List: React.FC<{
     other?: RepoSearchResultItem[]
@@ -24,7 +25,9 @@ const Home = observer(() => {
 
     const {repositories} = useStore();
 
+    const [searchText, setSearchText] = useState('');
     const search = (searchString: string) => {
+        setSearchText(searchString)
         repositories.getRepos(searchString).then()
     }
 
@@ -38,7 +41,11 @@ const Home = observer(() => {
             </Head>
             <main className={'d-flex p-4 gap-4 m-0'}>
                 <div className={'d-flex w-50 flex-column gap-3 flex-fill'}>
-                    <Input name={'search'} label={'search'} onChange={search}/>
+                    <div className={'d-flex'}>
+                        <Input name={'search'} label={'search'} onChange={search}/>
+                        <CopyButton text={searchText}/>
+                    </div>
+
                     <h1>
                         Repositories list:
                     </h1>
