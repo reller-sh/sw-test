@@ -8,10 +8,13 @@ import styles from './styles.module.scss'
 import {observer} from "mobx-react";
 import {useStore} from "@/hooks/useStore";
 import fp from "lodash/fp";
+import {useRouter} from "next/router";
 
 export const RepositoryItem: React.FC<{ item: RepoSearchResultItem }> = observer(({item}) => {
 
     const {repositories: {pushOrRemoveStar, starredIds}} = useStore()
+
+    const {push} = useRouter()
 
     const isStarred = fp.includes(item.id, starredIds)
     return (<>
@@ -37,7 +40,7 @@ export const RepositoryItem: React.FC<{ item: RepoSearchResultItem }> = observer
                         <button onClick={() => pushOrRemoveStar(item.id)}>
                             {isStarred ? 'remove star' : 'set star'}
                         </button> /
-                        <button onClick={() => pushOrRemoveStar(item.id)}>
+                        <button onClick={() => push(`/repo/${item.id}`)}>
                             Read more
                         </button>
 
